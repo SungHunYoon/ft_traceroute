@@ -48,8 +48,8 @@ typedef enum e_info {
 }	t_parse;
 
 typedef struct s_info {
-	int		sock;
-	int		opt;
+	int		udp_sock;
+	int		raw_sock;
 	int		pid;
 	char	target_dns[DOMAIN_LEN];
 	char	target_ip[IPV4_LEN];
@@ -60,17 +60,18 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	ft_bzero(void *s, size_t n);
 char	*ft_strncpy(char *dest, char *src, unsigned int n);
 
-int		parse_args(int argc, char **args, t_info *info);
+void	parse_args(int argc, char **args, t_info *info);
 
-int		invalid_option(char *str, int idx, int flag);
-int		usage_error(char *str, int idx, t_parse type);
-int		help_message(void);
-int		root_error(void);
-int		error_handling(char *str, int ret);
+void	invalid_option(char *str, int idx, int flag);
+void	usage_error(char *str, int idx, t_parse type);
+void	help_message(void);
+void	error_handling(char *str);
 
 double	diff_timeval(struct timeval time);
 int		domain_to_fqdn(char *domain, char *fqdn);
 int		domain_to_ip(char *domain, char *ip);
 char	*ip_to_domain(struct in_addr addr);
+
+void	process(t_info *info);
 
 #endif

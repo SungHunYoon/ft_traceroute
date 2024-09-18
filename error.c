@@ -12,13 +12,13 @@
 
 #include "traceroute.h"
 
-int	error_handling(char *str, int ret)
+void	error_handling(char *str)
 {
-	dprintf(2, "%s", str);
-	return (ret);
+	dprintf(2, "ft_traceroute: %s\n", str);
+	exit(FT_FAIL);
 }
 
-int	invalid_option(char *str, int idx, int flag)
+void	invalid_option(char *str, int idx, int flag)
 {
 	dprintf(2, "Bad option ");
 	if (!flag)
@@ -26,10 +26,10 @@ int	invalid_option(char *str, int idx, int flag)
 	else
 		dprintf(2, "`-%c' ", *str);
 	dprintf(2, "(argc %d)\n", idx);
-	return (PARSE_INVALID);
+	exit(FT_ERROR);
 }
 
-int	usage_error(char *str, int idx, t_parse type)
+void	usage_error(char *str, int idx, t_parse type)
 {
 	if (type == PARSE_HOST)
 	{
@@ -39,10 +39,10 @@ int	usage_error(char *str, int idx, t_parse type)
 	}
 	else if (type == PARSE_EXTRA)
 		dprintf(2, "Extra arg `%s' (position 2, argc %d)\n", str, idx);
-	return (type);
+	exit(FT_ERROR);
 }
 
-int	help_message(void)
+void	help_message(void)
 {
 	printf("Usage:\n  ft_traceroute host\n");
 	printf("Options:\n");
@@ -50,12 +50,5 @@ int	help_message(void)
 	printf("Read this help and exit\n\n");
 	printf("Arguments:\n");
 	printf("+     host          The host to traceroute to\n");
-	return (PARSE_HELP);
-}
-
-int	root_error(void)
-{
-	dprintf(2, "ft_traceroute: ");
-	dprintf(2, "please check root privilege.\n");
-	return (FT_FAIL);
+	exit(FT_SUCCESS);
 }
