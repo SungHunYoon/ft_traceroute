@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sungyoon <sungyoon@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/18 19:38:11 by sungyoon          #+#    #+#             */
+/*   Updated: 2024/09/18 19:39:10 by sungyoon         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "traceroute.h"
 
 double	diff_timeval(struct timeval time)
 {
-	double ret;
-	struct timeval now;
+	double			ret;
+	struct timeval	now;
 
 	gettimeofday(&now, NULL);
 	now.tv_sec -= time.tv_sec;
@@ -37,7 +49,7 @@ int	domain_to_fqdn(char *domain, char *fqdn)
 		{
 			ft_strncpy(fqdn, tmp->ai_canonname, ft_strlen(tmp->ai_canonname));
 			ret = FT_SUCCESS;
-			break;
+			break ;
 		}
 		tmp = tmp->ai_next;
 	}
@@ -66,7 +78,7 @@ int	domain_to_ip(char *domain, char *ip)
 			str = inet_ntoa(((struct sockaddr_in *)tmp->ai_addr)->sin_addr);
 			ft_strncpy(ip, str, ft_strlen(str));
 			ret = FT_SUCCESS;
-			break;
+			break ;
 		}
 		tmp = tmp->ai_next;
 	}
@@ -76,7 +88,7 @@ int	domain_to_ip(char *domain, char *ip)
 
 char	*ip_to_domain(struct in_addr addr)
 {
-	struct hostent *host;
+	struct hostent	*host;
 
 	host = gethostbyaddr(&addr, sizeof(addr), AF_INET);
 	if (!host)

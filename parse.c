@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sungyoon <sungyoon@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/18 19:38:15 by sungyoon          #+#    #+#             */
+/*   Updated: 2024/09/18 19:39:56 by sungyoon         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "traceroute.h"
 
 static int	parse_host(int argc, char **args, t_info *info)
@@ -8,7 +20,7 @@ static int	parse_host(int argc, char **args, t_info *info)
 	while (i < argc)
 	{
 		if (ft_strlen(args[i]) && args[i][0] == '-')
-			continue;
+			continue ;
 		if (ft_strlen(info->target_ip) != 0)
 			return (usage_error(args[i], i, PARSE_EXTRA));
 		if (domain_to_fqdn(args[i], info->target_dns) || \
@@ -29,7 +41,8 @@ static int	parse_option(int argc, char **args)
 	i = 1;
 	while (i < argc)
 	{
-		if (ft_strlen(args[i]) && args[i][0] == '-') {
+		if (ft_strlen(args[i]) && args[i][0] == '-')
+		{
 			c = args[i] + 1;
 			if (*c == '-')
 			{
@@ -49,7 +62,7 @@ static int	parse_option(int argc, char **args)
 	return (PARSE_SUCCESS);
 }
 
-int parse_args(int argc, char **args, t_info *info)
+int	parse_args(int argc, char **args, t_info *info)
 {
 	t_parse	ret;
 
