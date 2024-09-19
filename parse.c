@@ -15,44 +15,55 @@
 static void	parse_host(int argc, char **args, t_info *info)
 {
 	int		i;
+	char	*target;
 
 	i = 1;
 	while (i < argc)
 	{
-		if (ft_strlen(args[i]) && args[i][0] == '-')
-			continue ;
-		if (ft_strlen(info->target_ip) != 0)
-			usage_error(args[i], i, PARSE_EXTRA);
-		if (domain_to_fqdn(args[i], info->target_dns) || \
-			domain_to_ip(info->target_dns, info->target_ip))
-			usage_error(args[i], i, PARSE_HOST);
+		if (!(ft_strlen(args[i]) && args[i][0] == '-'))
+			target = args[i];
 		i++;
+	}
+	if (domain_to_fqdn(target, info->target_dns) || \
+		domain_to_ip(info->target_dns, info->target_ip))
+		error_handling("unknown host");
+}
+
+static void long_options(char *str)
+{
+	if (ft_strlen(str) == 2 && ft_strncmp(str, "--", 2) == 0)
+		return;
+	else if (ft_strncmp(str, "--help", 6) == 0)
+		help_message();
+	else
+		unrecognize_error(str);
+}
+
+static void short_options(char *str)
+{
+	while (*str)
+	{
+		if (*str == '?')
+			help_message();
+		else
+			invalid_option(*str);
+		str++;
 	}
 }
 
-static void	parse_option(int argc, char **args)
+static void	parse_options(int argc, char **args)
 {
-	int		i;
-	char	*c;
+	int	i;
 
 	i = 1;
 	while (i < argc)
 	{
 		if (ft_strlen(args[i]) && args[i][0] == '-')
 		{
-			c = args[i] + 1;
-			if (*c == '-')
-			{
-				if (ft_strncmp(c, "-help", 5) == 0)
-					help_message();
-				else
-					invalid_option(c, i, 0);
-			}
-			while (*c)
-			{
-				invalid_option(c, i, 1);
-				c++;
-			}
+			if (args[i][0] == '-' && args[i][1] == '-')
+				long_options(args[i]);
+			else
+				short_options(args[i] + 1);
 		}
 		i++;
 	}
@@ -62,6 +73,6 @@ void	parse_args(int argc, char **args, t_info *info)
 {
 	if (argc == 1)
 		help_message();
-	parse_option(argc, args);
+	parse_options(argc, args);
 	parse_host(argc, args, info);
 }

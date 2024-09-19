@@ -18,37 +18,28 @@ void	error_handling(char *str)
 	exit(FT_FAIL);
 }
 
-void	invalid_option(char *str, int idx, int flag)
+void	invalid_option(char c)
 {
-	dprintf(2, "Bad option ");
-	if (!flag)
-		dprintf(2, "`-%s' ", str);
-	else
-		dprintf(2, "`-%c' ", *str);
-	dprintf(2, "(argc %d)\n", idx);
+	dprintf(2, "ft_traceroute: invalid option -- '%c'\n", c);
+	dprintf(2, "Try 'ft_traceroute --help' for more information.\n");
 	exit(FT_ERROR);
 }
 
-void	usage_error(char *str, int idx, t_parse type)
+void	unrecognize_error(char *str)
 {
-	if (type == PARSE_HOST)
-	{
-		dprintf(2, "%s: Name or service not known\n", str);
-		dprintf(2, "Cannot handle \"host\" cmdline arg ");
-		dprintf(2, "`%s' on Position 1 (argc %d)\n", str, idx);
-	}
-	else if (type == PARSE_EXTRA)
-		dprintf(2, "Extra arg `%s' (position 2, argc %d)\n", str, idx);
+	dprintf(2, "ft_traceroute: unrecognized option '%s'\n", str);
+	dprintf(2, "Try 'ft_traceroute --help' for more information.\n");
 	exit(FT_ERROR);
 }
 
 void	help_message(void)
 {
-	printf("Usage:\n  ft_traceroute host\n");
-	printf("Options:\n");
-	printf("  --help                      ");
-	printf("Read this help and exit\n\n");
-	printf("Arguments:\n");
-	printf("+     host          The host to traceroute to\n");
+	printf("Usage: ft_traceroute [OPTION...] HOST\n");
+	printf("Print the route packets trace to network host.\n\n");
+	printf("  -?, --help                 ");
+	printf("give this help list\n\n");
+	printf("Mandatory or optional arguments to long options are also ");
+	printf("mandatory or optional\nfor any corresponding short options.\n\n");
+	printf("Report bugs to <sungyoon@student.42seoul.kr>.\n");
 	exit(FT_SUCCESS);
 }
