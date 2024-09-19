@@ -6,7 +6,7 @@
 /*   By: sungyoon <sungyoon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 19:38:15 by sungyoon          #+#    #+#             */
-/*   Updated: 2024/09/18 19:39:56 by sungyoon         ###   ########.fr       */
+/*   Updated: 2024/09/19 21:26:37 by sungyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,17 @@ static void	parse_host(int argc, char **args, t_info *info)
 		error_handling("unknown host");
 }
 
-static void long_options(char *str)
+static void	long_options(char *str)
 {
 	if (ft_strlen(str) == 2 && ft_strncmp(str, "--", 2) == 0)
-		return;
+		return ;
 	else if (ft_strncmp(str, "--help", 6) == 0)
 		help_message();
 	else
 		unrecognize_error(str);
 }
 
-static void short_options(char *str)
+static void	short_options(char *str)
 {
 	while (*str)
 	{

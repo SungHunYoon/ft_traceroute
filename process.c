@@ -6,7 +6,7 @@
 /*   By: sungyoon <sungyoon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 12:50:06 by sungyoon          #+#    #+#             */
-/*   Updated: 2024/09/19 12:50:19 by sungyoon         ###   ########.fr       */
+/*   Updated: 2024/09/19 21:26:51 by sungyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static void	initialize(t_info *info)
 {
 	// socklen_t	optlen;
 	// uint8_t		ttl;
-
 	printf("traceroute to %s (%s), ", info->target_dns, info->target_ip);
 	printf("64 hops max\n");
 	info->udp_sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -37,5 +36,4 @@ static void	initialize(t_info *info)
 void	process(t_info *info)
 {
 	initialize(info);
-	while (info->max_ttl &&)
 }
