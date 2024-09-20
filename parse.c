@@ -18,12 +18,15 @@ static void	parse_host(int argc, char **args, t_info *info)
 	char	*target;
 
 	i = 1;
+	target = NULL;
 	while (i < argc)
 	{
 		if (!(ft_strlen(args[i]) && args[i][0] == '-'))
 			target = args[i];
 		i++;
 	}
+	if (!target)
+		missing_host_error();
 	if (domain_to_fqdn(target, info->target_dns) || \
 		domain_to_ip(info->target_dns, info->target_ip))
 		error_handling("unknown host");
@@ -71,8 +74,6 @@ static void	parse_options(int argc, char **args)
 
 void	parse_args(int argc, char **args, t_info *info)
 {
-	if (argc == 1)
-		help_message();
 	parse_options(argc, args);
 	parse_host(argc, args, info);
 }

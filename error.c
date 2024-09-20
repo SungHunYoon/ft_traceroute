@@ -32,6 +32,13 @@ void	unrecognize_error(char *str)
 	exit(FT_ERROR);
 }
 
+void	missing_host_error(void)
+{
+	dprintf(2, "ft_traceroute: missing host operand\n");
+	dprintf(2, "Try 'ft_traceroute --help' for more information.\n");
+	exit(FT_ERROR);
+}
+
 void	help_message(void)
 {
 	printf("Usage: ft_traceroute [OPTION...] HOST\n");

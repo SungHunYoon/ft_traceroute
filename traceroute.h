@@ -61,6 +61,7 @@ void	parse_args(int argc, char **args, t_info *info);
 void	error_handling(char *str);
 void	invalid_option(char c);
 void	unrecognize_error(char *str);
+void	missing_host_error(void);
 void	help_message(void);
 
 double	diff_timeval(struct timeval time);
