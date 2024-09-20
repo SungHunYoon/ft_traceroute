@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-SRCS = ./traceroute.c ./parse.c ./error.c ./process.c ./ft_utils.c ./utils.c
+SRCS = ./traceroute.c ./parse.c ./error.c ./process.c ./parse_icmp.c ./ft_utils.c ./utils.c
 OBJS = $(SRCS:.c=.o)
 NAME = ft_traceroute
 

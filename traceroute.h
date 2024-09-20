@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <sys/select.h>
 # include <sys/time.h>
 # include <sys/socket.h>
 # include <sys/types.h>
@@ -37,18 +38,28 @@
 # define DOMAIN_LEN	255
 # define IPV4_LEN	16
 
+# define TIME_MS	1000
+# define TIME_US	1000000
+# define TIMEOUT_MS	3000
+
+# define ROUTE_CNT	3
 # define MAX_TTL	64
 # define PORT_NUM	33434
 
 typedef struct s_info {
-	int		udp_sock;
-	int		raw_sock;
-	char	target_dns[DOMAIN_LEN];
-	char	target_ip[IPV4_LEN];
-	int		max_ttl;
-	int		port_num;
-	int		isend;
-	int		pid;
+	int					udp_sock;
+	int					raw_sock;
+	char				target_dns[DOMAIN_LEN];
+	char				target_ip[IPV4_LEN];
+	struct sockaddr_in	src_addr;
+	struct sockaddr_in	dest_addr;
+	in_addr_t			prev;
+	uint8_t				ttl;
+	int					port_num;
+	int					max_ttl;
+	int					isend;
+	struct timeval		time;
+	int					pid;
 }	t_info;
 
 int		ft_strlen(char *str);
@@ -70,5 +81,7 @@ int		domain_to_ip(char *domain, char *ip);
 char	*ip_to_domain(struct in_addr addr);
 
 void	process(t_info *info);
+
+int		recv_icmp_packet(t_info *info);
 
 #endif
