@@ -6,7 +6,7 @@
 /*   By: sungyoon <sungyoon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 12:50:06 by sungyoon          #+#    #+#             */
-/*   Updated: 2024/09/19 21:26:51 by sungyoon         ###   ########.fr       */
+/*   Updated: 2024/09/21 11:23:46 by sungyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	send_udp_packet(t_info *info)
 
 static int	recv_process(t_info *info)
 {
-	fd_set 			reads;
+	fd_set			reads;
 	struct timeval	timeout;
 	double			diff_time;
 	size_t			tmp;
