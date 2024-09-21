@@ -51,14 +51,17 @@
 # define ICMP_SIZE	28
 # define UDP_SIZE	8
 
+# define BIND_PORT	50000
+# define MAX_PORT	65535
+
 typedef struct s_info {
 	int					udp_sock;
 	int					raw_sock;
 	char				target_dns[DOMAIN_LEN];
 	char				target_ip[IPV4_LEN];
+	struct sockaddr_in	bind_addr;
 	struct sockaddr_in	src_addr;
 	struct sockaddr_in	dst_addr;
-	char				router_ip[IPV4_LEN];
 	char				error;
 	in_addr_t			prev;
 	uint8_t				ttl;
@@ -66,7 +69,6 @@ typedef struct s_info {
 	int					max_ttl;
 	int					isend;
 	struct timeval		time;
-	int					pid;
 }	t_info;
 
 int		ft_strlen(char *str);
@@ -88,7 +90,8 @@ int		domain_to_fqdn(char *domain, char *fqdn);
 int		domain_to_ip(char *domain, char *ip);
 char	*ip_to_domain(struct in_addr addr);
 
-void	process(t_info *info);
+void	initialize(t_info *info);
+int		process(t_info *info);
 
 int		recv_icmp_packet(t_info *info);
 

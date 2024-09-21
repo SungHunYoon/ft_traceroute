@@ -20,6 +20,15 @@ int	main(int argc, char **args)
 		error_handling("please check root privilege");
 	ft_bzero(&info, sizeof(info));
 	parse_args(argc, args, &info);
-	process(&info);
+	printf("traceroute to %s (%s), ", info.target_dns, info.target_ip);
+	printf("64 hops max\n");
+	initialize(&info);
+	while (info.ttl <= info.max_ttl)
+	{
+		if (process(&info))
+			break;
+	}
+	close(info.udp_sock);
+	close(info.raw_sock);
 	exit(FT_SUCCESS);
 }

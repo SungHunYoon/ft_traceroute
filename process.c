@@ -28,29 +28,6 @@ static void	set_next_packet_info(t_info *info, int inc_flag)
 	info->prev = 0;
 }
 
-static void	initialize(t_info *info)
-{
-	struct in_addr	ip_addr;
-
-	printf("traceroute to %s (%s), ", info->target_dns, info->target_ip);
-	printf("64 hops max\n");
-	info->udp_sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-	if (info->udp_sock < 0)
-		error_handling("socket UDP error");
-	info->raw_sock = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
-	if (info->raw_sock < 0)
-		error_handling("socket RAW error");
-	if (inet_pton(AF_INET, info->target_ip, &ip_addr) < 1)
-		error_handling("inet_pton error");
-	info->dst_addr.sin_family = AF_INET;
-	info->dst_addr.sin_addr = ip_addr;
-	info->ttl = 1;
-	info->port_num = PORT_NUM;
-	set_next_packet_info(info, FT_FALSE);
-	info->max_ttl = MAX_TTL;
-	info->pid = getpid();
-}
-
 static void	send_udp_packet(t_info *info)
 {
 	const char	msg[] = "SUPERMAN";
@@ -81,38 +58,66 @@ static int	recv_process(t_info *info)
 		if (ret < 0)
 			error_handling("select error");
 		if (ret > 0 && FD_ISSET(info->raw_sock, &reads) && \
-			recv_icmp_packet(info))
+			recv_icmp_packet(info) == FT_SUCCESS)
 			return (FT_SUCCESS);
 		diff_time = diff_timeval(info->time);
 	}
 	return (FT_FAIL);
 }
 
-void	process(t_info *info)
+void	initialize(t_info *info)
+{
+	struct in_addr	ip_addr;
+
+	info->udp_sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+	if (info->udp_sock < 0)
+		error_handling("socket UDP error");
+	info->bind_addr.sin_family = AF_INET;
+	info->bind_addr.sin_addr.s_addr = INADDR_ANY;
+	info->bind_addr.sin_port = htons(BIND_PORT);
+	while (info->bind_addr.sin_port < MAX_PORT && \
+		bind(info->udp_sock, (struct sockaddr *)&info->bind_addr, \
+			sizeof(info->bind_addr)) < 0)
+		info->bind_addr.sin_port = htons(ntohs(info->bind_addr.sin_port) + 1);
+	if (ntohs(info->bind_addr.sin_port) == 0)
+		error_handling("bind error");
+	info->raw_sock = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
+	if (info->raw_sock < 0)
+		error_handling("socket RAW error");
+	if (inet_pton(AF_INET, info->target_ip, &ip_addr) < 1)
+		error_handling("inet_pton error");
+	info->dst_addr.sin_family = AF_INET;
+	info->dst_addr.sin_addr = ip_addr;
+	info->ttl = 1;
+	info->port_num = PORT_NUM;
+	set_next_packet_info(info, FT_FALSE);
+	info->max_ttl = MAX_TTL;
+}
+
+int	process(t_info *info)
 {
 	int	cnt;
 
-	initialize(info);
-	while (info->ttl <= info->max_ttl && !info->isend)
+	cnt = 0;
+	printf(" %2d  ", info->ttl);
+	while (cnt < ROUTE_CNT)
 	{
-		printf(" %2d ", info->ttl);
-		cnt = 0;
-		while (cnt < ROUTE_CNT)
+		send_udp_packet(info);
+		if (recv_process(info) == FT_SUCCESS)
 		{
-			send_udp_packet(info);
-			if (recv_process(info) == FT_SUCCESS)
-			{
-				if (cnt == 0 || info->prev != info->src_addr.sin_addr.s_addr)
-					printf(" %s ", inet_ntoa(info->src_addr.sin_addr));
-				printf(" %.3fms ", diff_timeval(info->time));
-				info->prev = info->src_addr.sin_addr.s_addr;
-			}
-			else
-				printf(" * ");
-			fflush(stdout);
-			cnt++;
+			if (info->prev != info->src_addr.sin_addr.s_addr)
+				printf(" %s ", inet_ntoa(info->src_addr.sin_addr));
+			printf(" %.3fms ", diff_timeval(info->time));
+			if (info->error)
+				printf("!%c ", info->error);
+			info->prev = info->src_addr.sin_addr.s_addr;
 		}
-		printf("\n");
-		set_next_packet_info(info, FT_TRUE);
+		else
+			printf(" * ");
+		fflush(stdout);
+		cnt++;
 	}
+	printf("\n"); 
+	set_next_packet_info(info, FT_TRUE);
+	return (info->isend);
 }
