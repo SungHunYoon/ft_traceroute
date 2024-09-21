@@ -6,7 +6,7 @@
 /*   By: sungyoon <sungyoon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 19:38:06 by sungyoon          #+#    #+#             */
-/*   Updated: 2024/09/18 19:38:07 by sungyoon         ###   ########.fr       */
+/*   Updated: 2024/09/21 19:08:50 by sungyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(int argc, char **args)
 	while (info.ttl <= info.max_ttl)
 	{
 		if (process(&info))
-			break;
+			break ;
 	}
 	close(info.udp_sock);
 	close(info.raw_sock);

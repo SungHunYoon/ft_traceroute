@@ -6,7 +6,7 @@
 /*   By: sungyoon <sungyoon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 12:50:06 by sungyoon          #+#    #+#             */
-/*   Updated: 2024/09/21 11:23:46 by sungyoon         ###   ########.fr       */
+/*   Updated: 2024/09/21 19:09:08 by sungyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int	process(t_info *info)
 		fflush(stdout);
 		cnt++;
 	}
-	printf("\n"); 
+	printf("\n");
 	set_next_packet_info(info, FT_TRUE);
 	return (info->isend);
 }
