@@ -16,7 +16,8 @@ static void	set_error_code(t_info *info, struct icmp *icmp_hdr)
 {
 	const char	error_list[] = "NHPPFS789012XVC";
 	
-	if (icmp_hdr->icmp_type != ICMP_UNREACH)
+	if (icmp_hdr->icmp_type != ICMP_UNREACH ||
+		icmp_hdr->icmp_code > ICMP_UNREACH_PRECEDENCE_CUTOFF)
 		return ;
 	info->error = error_list[icmp_hdr->icmp_code];
 }
