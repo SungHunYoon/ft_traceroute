@@ -24,7 +24,7 @@ static void	set_next_packet_info(t_info *info, int inc_flag)
 	optlen = sizeof(info->ttl);
 	if (setsockopt(info->udp_sock, IPPROTO_IP, IP_TTL, &info->ttl, optlen) < 0)
 		error_handling("setsockopt error");
-	info->dest_addr.sin_port = htons(info->port_num);
+	info->dst_addr.sin_port = htons(info->port_num);
 	info->prev = 0;
 }
 
@@ -42,8 +42,8 @@ static void	initialize(t_info *info)
 		error_handling("socket RAW error");
 	if (inet_pton(AF_INET, info->target_ip, &ip_addr) < 1)
 		error_handling("inet_pton error");
-	info->dest_addr.sin_family = AF_INET;
-	info->dest_addr.sin_addr = ip_addr;
+	info->dst_addr.sin_family = AF_INET;
+	info->dst_addr.sin_addr = ip_addr;
 	info->ttl = 1;
 	info->port_num = PORT_NUM;
 	set_next_packet_info(info, FT_FALSE);
@@ -56,7 +56,7 @@ static void	send_udp_packet(t_info *info)
 	const char	msg[] = "SUPERMAN";
 
 	if (sendto(info->udp_sock, msg, sizeof(msg), 0, \
-		(struct sockaddr *)&info->dest_addr, sizeof(info->dest_addr)) < 0)
+		(struct sockaddr *)&info->dst_addr, sizeof(info->dst_addr)) < 0)
 		error_handling("sendto error");
 	gettimeofday(&info->time, NULL);
 }

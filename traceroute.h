@@ -25,6 +25,7 @@
 # include <netinet/in.h>
 # include <netinet/ip.h>
 # include <netinet/ip_icmp.h>
+# include <netinet/udp.h>
 # include <netdb.h>
 # include <errno.h>
 
@@ -46,13 +47,19 @@
 # define MAX_TTL	64
 # define PORT_NUM	33434
 
+# define IP_SIZE	20
+# define ICMP_SIZE	28
+# define UDP_SIZE	8
+
 typedef struct s_info {
 	int					udp_sock;
 	int					raw_sock;
 	char				target_dns[DOMAIN_LEN];
 	char				target_ip[IPV4_LEN];
 	struct sockaddr_in	src_addr;
-	struct sockaddr_in	dest_addr;
+	struct sockaddr_in	dst_addr;
+	char				router_ip[IPV4_LEN];
+	char				error;
 	in_addr_t			prev;
 	uint8_t				ttl;
 	int					port_num;
@@ -66,6 +73,7 @@ int		ft_strlen(char *str);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	ft_bzero(void *s, size_t n);
 char	*ft_strncpy(char *dest, char *src, unsigned int n);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
 
 void	parse_args(int argc, char **args, t_info *info);
 

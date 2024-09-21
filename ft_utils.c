@@ -76,3 +76,22 @@ char	*ft_strncpy(char *dest, char *src, unsigned int n)
 	}
 	return (p);
 }
+
+void	*ft_memcpy(void *dst, const void *src, size_t n)
+{
+	char	*p1;
+	char	*p2;
+	size_t	idx;
+
+	if (dst == NULL && src == NULL)
+		return (NULL);
+	p1 = (char *)dst;
+	p2 = (char *)src;
+	idx = 0;
+	while (idx < n)
+	{
+		p1[idx] = p2[idx];
+		idx++;
+	}
+	return (dst);
+}
