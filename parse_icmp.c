@@ -14,26 +14,11 @@
 
 static void	set_error_code(t_info *info, struct icmp *icmp_hdr)
 {
+	const char	error_list[] = "NHPPFS789012XVC";
+	
 	if (icmp_hdr->icmp_type != ICMP_UNREACH)
 		return ;
-	if (icmp_hdr->icmp_code == ICMP_UNREACH_NET)
-		info->error = 'N';
-	else if (icmp_hdr->icmp_code == ICMP_UNREACH_HOST)
-		info->error = 'H';
-	else if (icmp_hdr->icmp_code == ICMP_UNREACH_PROTOCOL)
-		info->error = 'P';
-	else if (icmp_hdr->icmp_code == ICMP_UNREACH_NEEDFRAG)
-		info->error = 'F';
-	else if (icmp_hdr->icmp_code == ICMP_UNREACH_SRCFAIL)
-		info->error = 'S';
-	else if (icmp_hdr->icmp_code == ICMP_UNREACH_FILTER_PROHIB)
-		info->error = 'X';
-	else if (icmp_hdr->icmp_code == ICMP_UNREACH_HOST_PRECEDENCE)
-		info->error = 'V';
-	else if (icmp_hdr->icmp_code == ICMP_UNREACH_PRECEDENCE_CUTOFF)
-		info->error = 'C';
-	else
-		info->error = icmp_hdr->icmp_code + '0';
+	info->error = error_list[icmp_hdr->icmp_code];
 }
 
 static int	set_router_info(t_info *info, struct icmp *icmp_hdr)
@@ -53,7 +38,7 @@ static int	set_router_info(t_info *info, struct icmp *icmp_hdr)
 	return (ret);
 }
 
-int	parse_icmp_packet(t_info *info, char *buf)
+static int	parse_icmp_packet(t_info *info, char *buf)
 {
 	struct ip		ip_hdr;
 	struct icmp		icmp_hdr;
