@@ -23,7 +23,7 @@ static void	set_next_packet_info(t_info *info, int inc_flag)
 	}
 	optlen = sizeof(info->ttl);
 	if (setsockopt(info->udp_sock, IPPROTO_IP, IP_TTL, &info->ttl, optlen) < 0)
-		error_handling("setsockopt error");
+		error_handling("setsockopt", errno);
 	info->dst_addr.sin_port = htons(info->port_num);
 	info->prev = 0;
 }
@@ -34,8 +34,9 @@ static void	send_udp_packet(t_info *info)
 
 	if (sendto(info->udp_sock, msg, sizeof(msg), 0, \
 		(struct sockaddr *)&info->dst_addr, sizeof(info->dst_addr)) < 0)
-		error_handling("sendto error");
-	gettimeofday(&info->time, NULL);
+		error_handling("sendto", errno);
+	if (gettimeofday(&info->time, NULL) < 0)
+		error_handling("gettimeofday", errno);
 }
 
 static int	recv_process(t_info *info)
@@ -56,7 +57,7 @@ static int	recv_process(t_info *info)
 		timeout.tv_usec = tmp % TIME_US;
 		ret = select(info->raw_sock + 1, &reads, NULL, NULL, &timeout);
 		if (ret < 0)
-			error_handling("select error");
+			error_handling("select", errno);
 		if (ret > 0 && FD_ISSET(info->raw_sock, &reads) && \
 			recv_icmp_packet(info) == FT_SUCCESS)
 			return (FT_SUCCESS);
@@ -71,7 +72,7 @@ void	initialize(t_info *info)
 
 	info->udp_sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	if (info->udp_sock < 0)
-		error_handling("socket UDP error");
+		error_handling("socket", errno);
 	info->bind_addr.sin_family = AF_INET;
 	info->bind_addr.sin_addr.s_addr = INADDR_ANY;
 	info->bind_addr.sin_port = htons(BIND_PORT);
@@ -80,12 +81,12 @@ void	initialize(t_info *info)
 			sizeof(info->bind_addr)) < 0)
 		info->bind_addr.sin_port = htons(ntohs(info->bind_addr.sin_port) + 1);
 	if (ntohs(info->bind_addr.sin_port) == 0)
-		error_handling("bind error");
+		error_handling("bind", errno);
 	info->raw_sock = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
 	if (info->raw_sock < 0)
-		error_handling("socket RAW error");
+		error_handling("socket", errno);
 	if (inet_pton(AF_INET, info->target_ip, &ip_addr) < 1)
-		error_handling("inet_pton error");
+		error_handling("inet_pton", errno);
 	info->dst_addr.sin_family = AF_INET;
 	info->dst_addr.sin_addr = ip_addr;
 	info->ttl = 1;

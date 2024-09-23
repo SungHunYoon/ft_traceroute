@@ -79,7 +79,7 @@ void	*ft_memcpy(void *dst, const void *src, size_t n);
 
 void	parse_args(int argc, char **args, t_info *info);
 
-void	error_handling(char *str);
+void	error_handling(char *str, int err);
 void	invalid_option(char c);
 void	unrecognize_error(char *str);
 void	missing_host_error(void);

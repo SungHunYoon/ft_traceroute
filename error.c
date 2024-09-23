@@ -12,9 +12,13 @@
 
 #include "traceroute.h"
 
-void	error_handling(char *str)
+void	error_handling(char *str, int err)
 {
-	dprintf(2, "ft_traceroute: %s\n", str);
+	fflush(stdout);
+	dprintf(2, "ft_traceroute: %s", str);
+	if (err != 0)
+		dprintf(2, " : %s", strerror(err));
+	dprintf(2, "\n");
 	exit(FT_FAIL);
 }
 

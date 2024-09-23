@@ -17,7 +17,7 @@ int	main(int argc, char **args)
 	t_info	info;
 
 	if (getuid() != 0)
-		error_handling("please check root privilege");
+		error_handling("please check root privilege", 0);
 	ft_bzero(&info, sizeof(info));
 	parse_args(argc, args, &info);
 	printf("traceroute to %s (%s), ", info.target_dns, info.target_ip);

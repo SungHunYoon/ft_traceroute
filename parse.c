@@ -29,7 +29,7 @@ static void	parse_host(int argc, char **args, t_info *info)
 		missing_host_error();
 	if (domain_to_fqdn(target, info->target_dns) || \
 		domain_to_ip(info->target_dns, info->target_ip))
-		error_handling("unknown host");
+		error_handling("unknown host", 0);
 }
 
 static void	long_options(char *str)

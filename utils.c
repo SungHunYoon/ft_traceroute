@@ -17,7 +17,8 @@ double	diff_timeval(struct timeval time)
 	double			ret;
 	struct timeval	now;
 
-	gettimeofday(&now, NULL);
+	if (gettimeofday(&now, NULL) < 0)
+		error_handling("gettimeofday", errno);
 	now.tv_sec -= time.tv_sec;
 	now.tv_usec -= time.tv_usec;
 	if (now.tv_usec < 0)

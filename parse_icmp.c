@@ -90,6 +90,6 @@ int	recv_icmp_packet(t_info *info)
 	socksize = sizeof(info->src_addr);
 	if (recvfrom(info->raw_sock, buf, sizeof(buf), 0, \
 		(struct sockaddr *)&info->src_addr, &socksize) < 0)
-		error_handling("recvfrom error");
+		error_handling("recvfrom", errno);
 	return (parse_icmp_packet(info, buf));
 }
