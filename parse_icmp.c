@@ -72,6 +72,9 @@ static int	parse_icmp_packet(t_info *info, char *buf)
 	cal_cksum = calculate_checksum((uint16_t *)&buf[IP_SIZE], \
 									ntohs(ip_hdr.ip_len));
 	if ((cksum != cal_cksum) || \
+		(icmp_hdr.icmp_dun.id_ip.idi_ip.ip_p != IPPROTO_UDP) || \
+		(icmp_hdr.icmp_dun.id_ip.idi_ip.ip_dst.s_addr != \
+		info->dst_addr.sin_addr.s_addr) || \
 		(info->bind_addr.sin_port != udp_hdr.uh_sport) || \
 		(info->dst_addr.sin_port != udp_hdr.uh_dport))
 		return (FT_FAIL);
