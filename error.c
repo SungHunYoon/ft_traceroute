@@ -43,7 +43,7 @@ void	help_message(void)
 {
 	printf("Usage: ft_traceroute [OPTION...] HOST\n");
 	printf("Print the route packets trace to network host.\n\n");
-	printf("  -?, --help                 ");
+	printf("  -h, --help                 ");
 	printf("give this help list\n\n");
 	printf("Mandatory or optional arguments to long options are also ");
 	printf("mandatory or optional\nfor any corresponding short options.\n\n");

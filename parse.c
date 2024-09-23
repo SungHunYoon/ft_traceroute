@@ -46,7 +46,7 @@ static void	short_options(char *str)
 {
 	while (*str)
 	{
-		if (*str == '?')
+		if (*str == 'h')
 			help_message();
 		else
 			invalid_option(*str);
