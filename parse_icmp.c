@@ -6,7 +6,7 @@
 /*   By: sungyoon <sungyoon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 11:23:50 by sungyoon          #+#    #+#             */
-/*   Updated: 2024/09/21 11:23:52 by sungyoon         ###   ########.fr       */
+/*   Updated: 2024/09/23 10:39:01 by sungyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static void	set_error_code(t_info *info, struct icmp *icmp_hdr)
 {
-	const char	error_list[] = "NHPPFS789012XVC";
-	
-	if (icmp_hdr->icmp_type != ICMP_UNREACH ||
+	const char	error_list[] = "NHPPFS789abcXVC";
+
+	if (icmp_hdr->icmp_type != ICMP_UNREACH || \
 		icmp_hdr->icmp_code > ICMP_UNREACH_PRECEDENCE_CUTOFF)
 		return ;
 	info->error = error_list[icmp_hdr->icmp_code];
