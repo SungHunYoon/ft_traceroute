@@ -30,5 +30,8 @@ int	main(int argc, char **args)
 	}
 	close(info.udp_sock);
 	close(info.raw_sock);
-	exit(FT_SUCCESS);
+	if (info.isend)
+		exit(FT_SUCCESS);
+	else
+		exit(FT_FAIL);
 }
